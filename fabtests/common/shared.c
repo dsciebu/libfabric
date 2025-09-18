@@ -2704,6 +2704,7 @@ static int ft_spin_for_comp(struct fid_cq *cq, uint64_t *cur,
 				clock_gettime(CLOCK_MONOTONIC, &a);
 			if (!ft_tag_is_valid(cq, &comp, tag ? tag : rx_cq_cntr))
 				return -FI_EOTHER;
+			printf("READ ok\n");
 			(*cur)++;
 		} else if (ret < 0 && ret != -FI_EAGAIN) {
 			return ret;
@@ -2713,6 +2714,9 @@ static int ft_spin_for_comp(struct fid_cq *cq, uint64_t *cur,
 				fprintf(stderr, "%ds timeout expired\n", timeout);
 				return -FI_ENODATA;
 			}
+		} else {
+			printf("READ error\n");
+			usleep(100000);
 		}
 	} while (total - *cur > 0);
 
